@@ -13,25 +13,40 @@ requests back to the instructor's repository, and each team has an independent h
 
 ---
 
+## Key Deadlines (do not miss these)
+
+| Date | Time | Action |
+|------|------|--------|
+| **June 18** | 12:00 noon | Group lead ranks session slots in Moodle |
+| **June 30** | 12:00 noon | Exactly one member submits repo link to Moodle |
+| **June 30** | 23:59 | Final code deadline — commits after this are not graded |
+
+---
+
 ## Step 1 — Create your team's repository
 
 1. Go to **https://github.com/firrm/dai-mission-template**
 2. Click the green **"Use this template"** button (top right of the repo page)
 3. Select **"Create a new repository"**
 4. Set the **owner** to one team member's GitHub account
-5. Set the **repository name** — use the convention: `dai-mission-ss26-team-NN`
-   (replace `NN` with your team number, e.g. `dai-mission-ss26-team-07`)
-6. Set visibility to **Public**  
-   *(required: the CI badge is only visible to unauthenticated viewers — including
-   graders — when the repo is public)*
+5. Set the **repository name** following this exact format: `dai-mission-group-A`
+   (replace `A` with your group's actual letter, e.g. `dai-mission-group-G`)
+6. Set visibility to **Public** or **Private** (your choice)
+   - **If private:** you MUST add `pnposch` and `kiraschoenhuette` as collaborators
+     (Settings → Collaborators → Add people) before the deadline
+   - **If public:** the CI badge is visible to anyone without authentication
 7. Click **"Create repository from template"**
 
 ---
 
 ## Step 2 — Invite your teammates
 
-Go to **Settings → Collaborators → Add people** and search by GitHub username.  
+Go to **Settings → Collaborators → Add people** and search by GitHub username.
 All team members need **Write** access.
+
+If your repo is private, also add the teaching team at this step:
+- `pnposch`
+- `kiraschoenhuette`
 
 ---
 
@@ -41,28 +56,40 @@ Open `README.md` and:
 
 - Replace `[Project Title]` with your actual project title
 - Fill in the **Team** table (names and roles — no student IDs in this file)
-- **Update the CI badge URL**: change `<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>`
-  to your actual owner/repo name, e.g.:
+- **Update the CI badge URL**: replace `<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>`
+  with your actual owner/repo, e.g.:
   ```
-  ![Notebook CI](https://github.com/jsmith/dai-mission-ss26-team-07/actions/workflows/run-notebook.yml/badge.svg)
+  ![Notebook CI](https://github.com/jsmith/dai-mission-group-G/actions/workflows/run-notebook.yml/badge.svg)
   ```
-- Fill in the **Research Question**, **Methods Overview**, and **Data Sources** tables
+- Fill in **Research Question**, **Methods Overview**, and **Data Sources**
+- If your data is ≥ 100 MB, add a Sciebo share link in the Data Sources table
+  (do not commit files this large to git)
 
 ---
 
-## Step 4 — Work in the notebook
+## Step 4 — Fill in the Work Plan
 
-1. Open `notebook.ipynb` in JupyterLab (or push and use GitHub's notebook preview)
+Open `notebook.ipynb` and fill in the **Work Plan** table near the top.
+This maps each team member to their section responsibility and is the basis for
+individual accountability during the oral exam — every member must be able to
+answer questions about their own area.
+
+---
+
+## Step 5 — Work in the notebook
+
+1. Open `notebook.ipynb` in JupyterLab
 2. Read the **`[TEMPLATE]`** markdown cells — they explain what's expected in each section
 3. Replace the **`[EXAMPLE — replace with your analysis]`** code cells with your own analysis
 4. Keep the section structure (§1–§5) — graders navigate by section
 
-**Proposal stage:** complete Sections 1–6 (Research Question through Work Plan).  
-**Final stage:** complete all sections including Results and Discussion.
+**Proposal stage:** complete the Work Plan + Sections 1–5 up to the level that
+your research question is clear and your methods are planned.
+The proposal is approved once the instructor accepts your research question.
 
 ---
 
-## Step 5 — Commit and push
+## Step 6 — Commit and push during development
 
 ```bash
 git add notebook.ipynb README.md
@@ -70,24 +97,65 @@ git commit -m "feat: add team info and initial research question"
 git push origin main
 ```
 
-The CI workflow starts automatically. Check the **Actions** tab — a green check
-means the notebook runs end-to-end without errors.
+CI starts automatically. Check the **Actions** tab — a green badge means the
+notebook runs end-to-end without errors. Fix any red runs before the deadline.
 
 ---
 
-## Step 6 — Proposal submission
+## Step 7 — Prepare the final submission
 
-Submit your repository URL in the course system (Moodle) as your proposal.  
-The proposal is approved once the instructor confirms Sections 1–6 are complete
-and the research question is accepted. Feedback is given within one week.
+Before the **June 30, 23:59** code deadline:
+
+1. **Run the notebook fully** in JupyterLab so all cell outputs and plots are visible
+2. **Commit the executed notebook** — the file in your repo must contain all outputs:
+   ```bash
+   git add notebook.ipynb
+   git commit -m "final: submit fully executed notebook"
+   ```
+3. **Replace `presentation.pdf`** with your actual slide deck (PDF format only — no PPTX):
+   ```bash
+   # delete the placeholder, copy your real PDF, then:
+   git add presentation.pdf
+   git commit -m "final: add presentation slides"
+   ```
+4. **Include any custom `.py` modules** if you outsourced helper functions:
+   ```bash
+   git add my_helpers.py
+   ```
+5. **Verify CI is green** — check the Actions tab one last time
+6. Check the CI log for any submission warnings (unexecuted cells, placeholder PDF)
 
 ---
 
-## Step 7 — Final submission
+## Step 8 — Submit to Moodle
 
-1. Replace `presentation.pdf` with your actual presentation PDF (keep the same filename)
-2. Confirm the CI badge is **green** (notebook runs clean)
-3. Submit the repository URL as your final deliverable in the course system
+By **June 30, 12:00 noon**: exactly **one member** from the group submits the
+repository URL to Moodle. You may keep pushing code after submitting the link —
+the teaching team will clone at the **June 30, 23:59** deadline.
+
+---
+
+## Presentation slide rules (summary)
+
+- Maximum **5 content slides** (plus title page, references, and optional backup slides)
+- Backup slides may only contain tables or figures — no text bullets
+- Required topics across your 5 slides:
+  1. Motivation & Economic Relevance
+  2. Data & Methodology
+  3. Results
+  4. Limitations & Synthesis
+- **PDF format only** — do not submit PPTX
+- No live presentation: slides are reviewed during the oral exam Q&A
+
+---
+
+## Oral Exam (Q&A)
+
+- **Duration:** 15 minutes per group
+- **Format:** Q&A on your Proposal notebook and Presentation slides — no live presentation
+- **Rooms:** Morning slots → M811 · Afternoon slots → M827 · **Arrive 10 minutes early**
+- **Individual:** each member answers questions on their own Work Plan area
+- **Grading:** oral performance directly modifies your Mission base score
 
 ---
 
@@ -96,37 +164,37 @@ and the research question is accepted. Feedback is given within one week.
 **CI is failing (red badge)**
 
 1. Click the failing workflow run in the **Actions** tab
-2. Expand the **"Execute notebook"** step
-3. Read the Python traceback — the cell number and error message are shown
+2. Expand the failing step and read the traceback
 
-Common causes and fixes:
+Common causes:
 
 | Symptom | Fix |
 |---------|-----|
 | `ModuleNotFoundError: No module named 'X'` | Add `X` to `requirements.txt` and push |
-| `FileNotFoundError: data/myfile.csv` | Either commit the file (see `data/README.md`) or download it in the notebook |
-| `TimeoutError` (cell ran > 600 s) | Reduce dataset size or number of epochs for CI; add a comment explaining the trade-off |
-| `KeyError` / `AttributeError` | Likely a library version mismatch — pin the version in `requirements.txt` |
+| `FileNotFoundError: data/myfile.csv` | Commit the file or download it in the notebook |
+| `TimeoutError` (cell ran > 600 s) | Reduce data size or iterations for CI runs |
+| Validation: "PPTX file found" | Remove PPTX — submit PDF only |
+| Validation: "unexecuted cells" | Run all cells in JupyterLab, then commit the output |
 
 **Badge shows "unknown"**
 
-- No workflow has run yet: push a commit to `main` to trigger the first run
-- Repo is private: badge always shows "unknown" to unauthenticated viewers — keep the repo public
+- No workflow has run yet — push a commit to trigger the first run
+- Private repo — badge shows "unknown" to unauthenticated viewers (this is expected
+  for private repos; graders will clone directly)
 
-**Badge not updating after a successful run**
+**Badge not updating**
 
-GitHub CDN caches badge images for up to 5 minutes. Hard-refresh the README page
-(`Ctrl+Shift+R` / `Cmd+Shift+R`).
+GitHub CDN caches badges for up to 5 minutes. Hard-refresh (`Ctrl+Shift+R`).
 
-**Large data file rejected by GitHub (> 100 MB)**
+**Large data file rejected (> 100 MB)**
 
-See `data/README.md` for alternatives (runtime download, API access, Git LFS).
+See `data/README.md` for alternatives: runtime download, API access, or Sciebo link.
 
 ---
 
 ## Adding heavier dependencies (TensorFlow, PyTorch, etc.)
 
-If your generative block uses a deep learning framework, add it to `requirements.txt`:
+Add to `requirements.txt`:
 
 ```
 tensorflow>=2.17.0
@@ -135,6 +203,5 @@ torch>=2.3.0
 torchvision>=0.18.0
 ```
 
-Be aware this adds 2–5 minutes to CI install time on a cold runner. The pip cache
-(`cache: "pip"` in the workflow) means subsequent pushes are much faster if
-`requirements.txt` has not changed.
+The pip cache means subsequent pushes with unchanged `requirements.txt` take ~30 s
+instead of several minutes.

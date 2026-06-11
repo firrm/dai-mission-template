@@ -39,7 +39,16 @@ df = pd.read_csv(dest)
 Add the downloaded filename to `.gitignore` so it is not committed (`data/dataset.csv`).  
 Prefer stable URLs (Zenodo DOI links, GitHub releases, official government portals).
 
-### 3. API access
+### 3. Sciebo (TU Dortmund cloud storage) — large files
+
+If your data exceeds 100 MB and cannot be downloaded via a public API, upload it to
+[Sciebo](https://sciebo.de) and create a public share link. Then reference it in your
+`README.md` Data Sources table so graders know where to find it.
+
+Do **not** embed credentials in the notebook. Set a public Sciebo link with no password,
+or describe the access steps clearly in your README.
+
+### 4. API access
 
 ```python
 import yfinance as yf

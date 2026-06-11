@@ -25,6 +25,70 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
+      - name: Validate submission structure
+        run: |
+          python3 - <<'PYEOF'
+          import json, pathlib, sys
+
+          errors   = []   # blocking
+          warnings = []   # informational
+
+          # --- Blocking checks ---
+
+          # requirements.txt must exist
+          if not pathlib.Path('requirements.txt').exists():
+              errors.append('requirements.txt is missing')
+
+          # No PPTX files allowed (PDF only)
+          pptx = list(pathlib.Path('.').rglob('*.pptx')) + list(pathlib.Path('.').rglob('*.PPTX'))
+          if pptx:
+              errors.append(f'PPTX file(s) found — submit PDF only: {[str(p) for p in pptx]}')
+
+          # --- Warnings (non-blocking) ---
+
+          # Notebook should be submitted fully executed
+          nb = json.load(open('notebook.ipynb'))
+          unexecuted = [
+              i for i, c in enumerate(nb['cells'])
+              if c['cell_type'] == 'code'
+              and len(c.get('source', [])) > 0
+              and c.get('execution_count') is None
+          ]
+          if unexecuted:
+              warnings.append(
+                  f'SUBMISSION WARNING: {len(unexecuted)} code cell(s) have no execution_count '
+                  f'(indices: {unexecuted}). The notebook must be submitted in a fully executed '
+                  f'state — run all cells in JupyterLab, then commit the output.'
+              )
+
+          # presentation.pdf must not be the placeholder
+          pdf = pathlib.Path('presentation.pdf')
+          if pdf.exists():
+              try:
+                  content = pdf.read_text(errors='ignore')
+                  if 'THIS IS A PLACEHOLDER' in content:
+                      warnings.append(
+                          'SUBMISSION WARNING: presentation.pdf is still the placeholder. '
+                          'Replace it with your actual slide deck (PDF only) before the deadline.'
+                      )
+              except Exception:
+                  pass  # binary PDF — fine
+          else:
+              warnings.append('SUBMISSION WARNING: presentation.pdf is missing.')
+
+          # --- Report ---
+          for w in warnings:
+              print(w)
+
+          if errors:
+              print('\nVALIDATION FAILED:')
+              for e in errors:
+                  print(f'  ERROR: {e}')
+              sys.exit(1)
+          else:
+              print('Validation passed (blocking checks OK).')
+          PYEOF
+
       - name: Execute notebook
         run: |
           jupyter nbconvert \
